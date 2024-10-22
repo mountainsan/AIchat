@@ -25,17 +25,86 @@
             border-radius: 20px;
             display: flex;
             align-items: flex-start;
+
         }
         .user-message {
             align-self: flex-end;
-            background-color: #7c3aed;
-            color: white;
+            /*background-color: #7c3aed;*/
+            border-radius: 15px 3px 13px 15px;
+            background: #DDD;
+            color:#333333;
         }
         .bot-message {
             align-self: flex-start;
-            background-color: #e5e7eb;
-            color: black;
+            display: inline-flex;
+            padding: 8.5px 10px;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+
         }
+        .avatar-container {
+            align-self: flex-start;
+            display: inline-flex;
+            align-items: center;
+           
+            /* 아바타와 메시지 간의 간격 */
+        }
+
+        .dr-oh-wrapper {
+                display: flex;
+                flex-direction: column; /* 수직 정렬 */
+                align-items: flex-start; /* 왼쪽 맞춤 */
+                width: 100%; /* 전체 너비 사용 */
+            }
+
+        .dr-oh-text {
+            align-self: flex-start;
+            align-items: center;
+            font-weight: bold;
+            /*color: #ffcc00;     /* 글씨 색상 */
+            /*font-size: 16px; */ 
+        }
+
+        .message-content {
+            align-self: flex-start;
+            display: inline-flex;
+            align-items: center;
+            padding: 8.5px 10px;
+            border-radius: 3px 15px 15px 13px;
+            background-color: #014547;
+            color: white;
+            margin-top: 5px;
+           
+        }
+
+        .bot-message-content {
+            align-self: flex-start;
+            display: inline-flex;
+            align-items: center;
+            padding: 8.5px 10px;
+            border-radius: 3px 15px 15px 13px;
+            background-color: #014547;
+            color: white;
+            margin-top: 5px;
+           
+        }
+
+        .user-message-content {
+            align-self: flex-start;
+            display: inline-flex;
+            align-items: center;
+            padding: 8.5px 10px;
+         
+            background-color: #DDD;
+            color: #333333;
+            margin-top: 5px;
+           
+        }   
+
+
+
+
         .input-area {
             position: fixed;
             bottom: 0;
@@ -65,7 +134,7 @@
             align-items: center;
         }
         .new-chat-btn {
-            background-color: #10B981;
+            background-color: #5BA682;
             color: white;
             border-radius: 50%;
             width: 36px;
@@ -77,21 +146,51 @@
             font-size: 20px;
             cursor: pointer;
         }
+
+        .textfield { 
+            display: flex; width: 90%; 
+            margin-right: 9px;
+            align-items: center; gap: 7px; padding: 8px 12px; position: relative; border-radius: 6px; border: 1px solid; border-color: #0000001a; 
+        }
+
+        .upperLogo{
+            width: 20%; /* 너비를 50%로 설정 */
+            height: auto; /* 비율을 유지하면서 높이 자동 조절 */
+        }
+
+        .logo-container {
+            display: flex; /* Flexbox 사용 */
+             /*justify-content: center; 가로 방향 중앙 정렬 */
+            justify-content: flex-end; /* 왼쪽 정렬 */
+        }
+
+
     </style>
 </head>
-<body class="bg-gray-100">
+<body style="background-color: #f9f9f9;">
     <div class="container mx-auto p-4 h-full flex flex-col">
-        <h1 class="text-2xl font-bold mb-4 text-center text-purple-600">오은영 박사 AI 상담소</h1>
+        <!-- <h1 class="text-2xl font-bold mb-4 text-center text-purple-600">오은영 박사 AI 상담소</h1>-->
+        <div class="logo-container">
+        <img class="upperLogo" src="{{ url_for('static', filename='images/logo.PNG') }}"/>
+        </div>
+
         <div class="flex-grow overflow-hidden">
             <div id="chat-container" class="chat-container bg-white rounded-lg shadow-md p-4 mb-4"></div>
+            
         </div>
+
         <div id="video-recommendations" class="video-recommendations hidden"></div>
         <div class="input-area">
             <div class="input-group">
                 <button id="new-chat" class="new-chat-btn mr-2" title="새 대화 시작">+</button>
                 <form id="chat-form" class="flex flex-grow">
-                    <input type="text" id="user-input" class="flex-grow border rounded-l-full p-2" placeholder="메시지를 입력하세요...">
-                    <button type="submit" class="bg-purple-500 text-white px-4 py-2 rounded-r-full">전송</button>
+                    <!-- <input type="text" id="user-input" class="flex-grow border rounded-l-full p-2" placeholder="메시지를 입력하세요."> -->
+                    <input type="text" id="user-input" class="textfield" placeholder="메시지를 입력하세요.">
+                    <!--<button type="submit" class="bg-purple-500 text-white px-4 py-2 rounded-r-full">전송</button>-->
+                     <!--<button type="submit" class="new-chat-btn mr-2" title="새 submit">^</button>-->
+                    <button type="submit" title="새 전송"  class="responsive-image">
+                        <img src="{{ url_for('static', filename='images/send_36.png') }}"/>
+                      </button>
                 </form>
             </div>
         </div>
@@ -134,26 +233,68 @@
         newChatButton.addEventListener('click', () => {
             chatContainer.innerHTML = '';
             hideVideoRecommendations();
-            addMessage('bot', '안녕하세요. 오은영 박사 AI 상담소입니다. 새로운 상담을 시작합니다. 어떤 고민이 있으신가요?');
+            addMessage('bot', '안녕하세요. 새로운 상담을 시작하겠습니다. 어떤 고민이 있으신가요?');
         });
 
+        // 이전 코드  -------------------------------------------------------------
+        // function addMessage(sender, message) {
+        //     const messageElement = document.createElement('div');
+        //     messageElement.classList.add('message', sender === 'user' ? 'user-message' : 'bot-message');
+
+        //     const botAvatarUrl = "{{ url_for('static', filename='images/Group 1171275473.png') }}"; // Flask에서 URL 생성
+
+        //     let avatarHTML = '';
+        //     if (sender === 'bot') {
+        //        avatarHTML = `<img src="${botAvatarUrl}" alt="drLogo" class="avatar">`;
+        //     }
+            
+        //     messageElement.innerHTML = `
+        //         ${avatarHTML}
+        //         <div class="message-content">${message}</div>
+        //     `;
+            
+        //     chatContainer.appendChild(messageElement);
+        //     chatContainer.scrollTop = chatContainer.scrollHeight;
+        // }
+        // 이전 코드  -------------------------------------------------------------
+
+        // 새 코드  -------------------------------------------------------------
         function addMessage(sender, message) {
-            const messageElement = document.createElement('div');
-            messageElement.classList.add('message', sender === 'user' ? 'user-message' : 'bot-message');
-            
-            let avatarHTML = '';
-            if (sender === 'bot') {
-                avatarHTML = '<img src="http://newsimg.hankookilbo.com/2018/05/30/201805301651086705_8.jpg" alt="오은영 박사" class="avatar">';
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message', sender === 'user' ? 'user-message' : 'bot-message');
+
+                const botAvatarUrl = "{{ url_for('static', filename='images/Group 1171275473.png') }}"; // Flask에서 URL 생성
+
+                let avatarHTML = '';
+                if (sender === 'bot') {
+                    avatarHTML = `<div class="avatar-container"><img src="${botAvatarUrl}" alt="drLogo" class="avatar"></div>`;
+                    
+                    messageElement.innerHTML = `
+                    ${avatarHTML}
+                    
+                    <div class="dr-oh-wrapper"> 
+                      <div class="dr-oh-text">Dr.oh</div>
+
+                        <div class="bot-message-content">
+                            ${message}
+                        </div>
+                         </div>
+                      `;
+                
+                } else{
+                     messageElement.innerHTML = `
+                        ${avatarHTML}
+                        <div class="user-message-content">${message}</div>
+                     `;
+                }
+    
+                
+                chatContainer.appendChild(messageElement);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
             }
-            
-            messageElement.innerHTML = `
-                ${avatarHTML}
-                <div class="message-content">${message}</div>
-            `;
-            
-            chatContainer.appendChild(messageElement);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
+
+         // 새 코드  -------------------------------------------------------------
+
 
         function showVideoRecommendations(videos) {
             videoRecommendationsContainer.innerHTML = '<h3 class="font-bold mb-2">관련 영상 추천:</h3>';
@@ -174,7 +315,7 @@
         }
 
         // 초기 메시지 추가
-        addMessage('bot', '안녕하세요. 오은영 박사 AI 상담소입니다. 어떤 고민이 있으신가요?');
+        addMessage('bot', '안녕하세요. 어떤 고민이 있으신가요?');
     </script>
 </body>
 </html>

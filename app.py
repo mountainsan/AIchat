@@ -1,3 +1,5 @@
+# 기존----------------------------------------------------------------------
+
 import os
 import logging
 from dotenv import load_dotenv
@@ -95,6 +97,7 @@ def generate_chat_response(user_input):
         logger.error(f"Error in OpenAI API call: {str(e)}")
         return "죄송합니다. 현재 서비스에 문제가 있습니다. 잠시 후 다시 시도해 주세요."
 
+# 기존 메인 ----------------------------------------------------------------------
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -119,3 +122,5 @@ def chat():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+#----------------------------------------------------------------------
